@@ -2,6 +2,7 @@
 import re
 import numbers
 
+# regular expressions
 keyvarRE = re.compile(r'[^@].*?(?==)')
 formatRE = re.compile(r'\w+(?=\s*=[^/])')
 valRE = re.compile(r'[^=]*$')
@@ -13,7 +14,7 @@ def setvariable(inputline, dictionary):
     :param dictionary: token will be added to this dictionary
     :return: N/A
     """
-    tokenstring= inputline.strip(' ')
+    tokenstring = inputline.strip(' ')
 
     if tokenstring[0] == "@":
         result = validvar(tokenstring)
@@ -24,6 +25,7 @@ def setvariable(inputline, dictionary):
         print('***Not a recognizable command, should be "@key=value"')
 
 
+# noinspection PyComparisonWithNone
 def validvar(tokenstring):
     """
     :param tokenstring: tokens to be validated
