@@ -6,14 +6,9 @@ import re
 
 # noinspection PyComparisonWithNone
 def substituteWords(line, dictionary):
-    token_list = line.split()
-
-    for token in token_list:
-        new_token = re.sub('[.!@,]', '', token)
-        if dictionary.get(new_token) != None:
-            value = dictionary.get(new_token)
-            new_token = "@" + new_token
-            line = re.sub(new_token, value, line)
+    for key in dictionary:
+        matchkey = "@" + key
+        line = re.sub(matchkey, dictionary[key], line)
     return line
 
 
