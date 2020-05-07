@@ -27,22 +27,15 @@ def readCommands(file):
     :param file: text file to be parsed
     :return: N/A
     """
-    line_detected = False
 
-    while True:
-        input_line = file.readline()
-
-        if input_line == "":  # check for empty input
-            break
-
+    for input_line in file.readlines():
         input_line = input_line.rstrip('\n')  # removes newline
         token_list = input_line.split()
 
-        if input_line == "":  # check for empty input
+        if token_list == []:  # check for empty input
+            print()
             continue
-
-        # go thru tokens if we have valid func calls
-        if token_list[0] == "@.":
+        elif token_list[0] == "@.":
             if token_list[1] == "VAR":
                 setvariable(input_line[6:], variable_dictionary)
             elif token_list[1] == "FORMAT":
