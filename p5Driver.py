@@ -52,9 +52,8 @@ def readCommands(file):
             # else:
             # print("*** Not a recognizable command, found:" + inputLine)
         else:
-            print("here we go")
             formatted_line = Formatter(input_line, variable_dictionary, format_dictionary)
-            print(formatted_line.substituteWords())
+            formatted_line.formattedLine()
 
 
 readCommands(file)
