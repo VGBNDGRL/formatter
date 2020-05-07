@@ -2,7 +2,8 @@
 import sys
 import os
 import pprint
-from p4At import setformat, setvariable
+from p4At import *
+from Formatter import *
 
 if len(sys.argv) < 2:
     print("filename needed as command argument")
@@ -48,10 +49,12 @@ def readCommands(file):
                     pprint.pprint(variable_dictionary, width=30)
                 elif token_list[2] == "FORMAT":
                     pprint.pprint(format_dictionary, width=30)
-            else:
-                print("*** Not a recognizable command, found:" + input_line)
+            # else:
+            # print("*** Not a recognizable command, found:" + inputLine)
         else:
-            print("*** Not a recognizable command, found:" + input_line)
+            print("here we go")
+            formatted_line = Formatter(input_line, variable_dictionary, format_dictionary)
+            print(formatted_line.substituteWords())
 
 
 readCommands(file)

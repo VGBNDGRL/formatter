@@ -11,7 +11,5 @@ class Formatter:
         self.variable_dictionary = variable_dictionary
         self.format_dictionary = format_dictionary
 
-    # define class methods
-    @classmethod
-    def substituteWords(cls, input_line):
-        print("This is subtituteWords")
+    def substituteWords(self):
+        return self.current_line
