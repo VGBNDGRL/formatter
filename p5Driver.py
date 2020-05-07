@@ -13,7 +13,6 @@ if not os.path.isfile(sys.argv[1]):
     sys.exit(1)
 file = open(sys.argv[1], "r")
 
-# TODO: move dictionaries!
 variable_dictionary = {}
 format_dictionary = {
     "FLOW": "YES"
@@ -28,13 +27,19 @@ def readCommands(file):
     :param file: text file to be parsed
     :return: N/A
     """
+    line_detected = False
 
     while True:
         input_line = file.readline()
+
         if input_line == "":  # check for empty input
             break
+
         input_line = input_line.rstrip('\n')  # removes newline
         token_list = input_line.split()
+
+        if input_line == "":  # check for empty input
+            continue
 
         # go thru tokens if we have valid func calls
         if token_list[0] == "@.":
@@ -49,11 +54,9 @@ def readCommands(file):
                     pprint.pprint(variable_dictionary, width=30)
                 elif token_list[2] == "FORMAT":
                     pprint.pprint(format_dictionary, width=30)
-            # else:
-            # print("*** Not a recognizable command, found:" + inputLine)
         else:
             formatted_line = Formatter(input_line, variable_dictionary, format_dictionary)
-            formatted_line.formattedLine()
+            print(formatted_line.formattedLine())
 
 
 readCommands(file)

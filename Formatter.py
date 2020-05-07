@@ -27,4 +27,4 @@ class Formatter:
 
     def formattedLine(self):
         line = substituteWords(self.current_line, self.variable_dictionary)
-        print(line)
+        return line
