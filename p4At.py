@@ -3,21 +3,21 @@ import re
 import numbers
 
 # regular expressions
-keyvarRE = re.compile(r'[^@].*?(?==)')
-formatRE = re.compile(r'\w+(?=\s*=[^/])')
-valRE = re.compile(r'[^=]*$')
+key_regex = re.compile(r'[^@].*?(?==)')
+format_regex = re.compile(r'\w+(?=\s*=[^/])')
+value_regex = re.compile(r'[^=]*$')
 
 
-def setvariable(inputline, dictionary):
+def setvariable(input_line, dictionary):
     """
-    :param inputline: tokens to be validated
+    :param input_line: tokens to be validated
     :param dictionary: token will be added to this dictionary
     :return: N/A
     """
-    tokenstring = inputline.strip(' ')
+    token_string = input_line.strip(' ')
 
-    if tokenstring[0] == "@":
-        result = validvar(tokenstring)
+    if token_string[0] == "@":
+        result = validvar(token_string)
         # if valid add to dictionary
         if bool(result[2]):
             dictionary[result[0]] = result[1]
@@ -37,10 +37,10 @@ def validvar(tokenstring):
     value = None
     key = None
 
-    key = keyvarRE.search(tokenstring).group()
+    key = key_regex.search(tokenstring).group()
 
     if key != None:
-        value = valRE.search(tokenstring).group()
+        value = value_regex.search(tokenstring).group()
         if value != None:
             value = value.strip('\"')
             valid = True
@@ -51,15 +51,15 @@ def validvar(tokenstring):
     return key, value, valid
 
 
-def setformat(tokenlist, dictionary):
+def setformat(token_list, dictionary):
     """
-    :param tokenlist: token to be validated
+    :param token_list: token to be validated
     :param dictionary: token will be added to this dictionary
     :return: N/A
     """
 
     # go thru each tag and check its validity (LM, RM, JUST, BULLET, FLOW)
-    for token in tokenlist:
+    for token in token_list:
         result = validformat(token)
         if bool(result[2]):
             # if valid add to dictionary
@@ -74,8 +74,8 @@ def validformat(token):
     :return value: can hold string or None
     :return valid: True if 'key:val' format is followed, otherwise False
     """
-    key = formatRE.search(token).group()
-    value = valRE.search(token).group()
+    key = format_regex.search(token).group()
+    value = value_regex.search(token).group()
     valid = False
 
     if key == "LM" or key == "RM":
