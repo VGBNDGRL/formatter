@@ -22,6 +22,7 @@ format_dictionary = {
     , "BULLET": "o"}
 
 
+# noinspection PySimplifyBooleanCheck
 def readCommands(file):
     """
     :param file: text file to be parsed
@@ -48,8 +49,8 @@ def readCommands(file):
                 elif token_list[2] == "FORMAT":
                     pprint.pprint(format_dictionary, width=30)
         else:
-            formatted_line = Formatter(input_line, variable_dictionary, format_dictionary)
-            print(formatted_line.formattedLine())
+            f = Formatter(input_line, variable_dictionary, format_dictionary)
+            f.formatAndPrint()
 
 
 readCommands(file)
