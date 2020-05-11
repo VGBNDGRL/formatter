@@ -21,6 +21,8 @@ format_dictionary = {
     , "JUST": "LEFT"
     , "BULLET": "o"}
 
+f = Formatter(" ", format_dictionary)
+
 
 # noinspection PySimplifyBooleanCheck
 def readCommands(file):
@@ -49,8 +51,9 @@ def readCommands(file):
                 elif token_list[2] == "FORMAT":
                     pprint.pprint(format_dictionary, width=30)
         else:
-            f = Formatter(input_line, variable_dictionary, format_dictionary)
-            f.formatAndPrint()
+            f.format_dictionary = format_dictionary
+            f.variable_dictionary = format_dictionary
+            f.getformattedLine(input_line)
 
 
 readCommands(file)
