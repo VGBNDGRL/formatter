@@ -63,7 +63,6 @@ class Formatter:
             if self.format_dictionary["FLOW"] == "YES":
                 printLine(self.current_working_line, self.format_dictionary, self.new_par)
                 self.clearTheLine()
-                print("\n")
         else:
             input_line = expandVariables(input_line, self.variable_dictionary)
             if self.format_dictionary["FLOW"] == "YES":
