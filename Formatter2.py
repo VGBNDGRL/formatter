@@ -1,4 +1,4 @@
-# Formatter.py
+# Formatter2.py
 # create a text formatter, which understands:
 # margins, left justification, right justification, centering, bullet lists, and variable substitution
 import re
@@ -59,39 +59,32 @@ class Formatter:
         if self.current_working_line == "" and self.format_dictionary["JUST"] == "BULLET":
             Formatter.last_format_width = int(self.format_dictionary["RM"]) - int(self.format_dictionary["LM"]) + 2
 
-        # if input_line == "":
-        #     if self.format_dictionary["FLOW"] == "YES":
-        #         #print(self.current_working_line)
-        #     new_paragraph = True
-        #     #print("")
-        #     return
+        if input_line == "":
+            if self.format_dictionary["FLOW"] == "YES":
+                printLine(self.current_working_line, self.format_dictionary, self.new_par)
+                self.clearTheLine()
+                print("\n")
+        else:
+            input_line = expandVariables(input_line, self.variable_dictionary)
+            if self.format_dictionary["FLOW"] == "YES":
+                words = input_line.split()
+                count = len(words)
+                for word in words:
+                    length = len(word)
+                    if len(word) <= Formatter.last_format_width:
+                        self.current_working_line = " ".join((self.current_working_line, word))
+                        Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
+                    else:
+                        printLine(self.current_working_line, self.format_dictionary, self.new_par)
+                        self.clearTheLine()
+                        self.current_working_line = " ".join((self.current_working_line, word))
+                        Formatter.last_format_width = original_width
+                        Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
 
-        input_line = expandVariables(input_line, self.variable_dictionary)
-
-        # if self.format_dictionary["JUST"] == "BULLET" and self.new_par == True:
-        #     input_line =
-
-        if self.format_dictionary["FLOW"] == "YES":
-            words = input_line.split()
-            count = len(words)
-            for word in words:
-                length = len(word)
-                if len(word) <= Formatter.last_format_width:
-                    self.current_working_line = " ".join((self.current_working_line, word))
-                    Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
-                else:  # len(word) > Formatter.last_format_width:
-                    printLine(self.current_working_line, self.format_dictionary, self.new_par)
-                    self.current_working_line = ""
-                    self.current_working_line = " ".join((self.current_working_line, word))
-                    Formatter.last_format_width = original_width
-                    Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
-                # count = count - 1
-
-        if self.format_dictionary["FLOW"] == "NO":
-            if len(input_line) > Formatter.last_format_width:
-                f_line = input_line[:Formatter.last_format_width]
-                printLine(f_line, self.format_dictionary, self.new_par)
-                return
-            else:
-                printLine(input_line, self.format_dictionary, self.new_par)
-                return
+            elif self.format_dictionary["FLOW"] == "NO":
+                if len(input_line) > Formatter.last_format_width:
+                    f_line = input_line[:Formatter.last_format_width]
+                    printLine(f_line, self.format_dictionary, self.new_par)
+                else:
+                    printLine(input_line, self.format_dictionary, self.new_par)
+                    return

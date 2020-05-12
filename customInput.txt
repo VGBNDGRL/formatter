@@ -10,3 +10,4 @@ rope. The baskets are of equal weight. The one
 outside the window is empty, and the other
 on the ground contains a rock with a mass of 30
 kilograms. The rock serves as a counterweight.
+
