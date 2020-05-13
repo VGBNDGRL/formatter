@@ -9,6 +9,11 @@ last_format_width = -99
 
 # noinspection PyComparisonWithNone
 def expandVariables(line, dictionary):
+    """
+    :param line: current line withe word we are trying to expand
+    :param dictionary: has keys that we will sub with
+    :return: an expanded line
+    """
     for key in dictionary:
         match_key = "@" + key
         line = re.sub(match_key, dictionary[key], line)
@@ -16,6 +21,12 @@ def expandVariables(line, dictionary):
 
 
 def printLine(current_line, dictionary, new_par):
+    """
+    :param current_line: current line to print
+    :param dictionary: holds keys and values
+    :param new_par: a boolean
+    :return: N/A
+    """
     if dictionary["FLOW"] == "YES":
         if dictionary["JUST"] == "BULLET":
             if current_line == "":
@@ -57,10 +68,19 @@ class Formatter:
         self.new_par = False
 
     def clearTheLine(self):
+        """
+
+        :return: Resets boolean and initializes current working line to an empty string
+        """
         self.current_working_line = ""
         self.new_par = True
 
     def getformattedLine(self, input_line):
+        """
+
+        :param input_line: the current line to print
+        :return: N/A
+        """
         original_width = int(self.format_dictionary["RM"]) - int(self.format_dictionary["LM"]) + 1
         if self.current_working_line == "" and self.format_dictionary["JUST"] != "BULLET":
             Formatter.last_format_width = int(self.format_dictionary["RM"]) - int(self.format_dictionary["LM"]) + 1
