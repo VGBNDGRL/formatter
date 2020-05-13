@@ -16,13 +16,17 @@ def expandVariables(line, dictionary):
 
 
 def printLine(current_line, dictionary, new_par):
-    if dictionary["FLOW"] == "YES" and current_line == "":
-        pass
     if dictionary["FLOW"] == "YES":
-        if dictionary["JUST"] == "BULLET" and new_par == True:
-            num_of_spaces = int(dictionary["LM"]) - 2
-            formatted_line = dictionary["BULLET"] + current_line
-            print(formatted_line)
+        if dictionary["JUST"] == "BULLET":
+            if new_par:
+                num_of_spaces = " " * (int(dictionary["LM"]) - 1)
+                formatted_line = dictionary["BULLET"] + current_line
+                print(num_of_spaces + formatted_line)
+                new_par = False
+            else:
+                num_of_spaces = " " * (int(dictionary["LM"]))
+                formatted_line = current_line
+                print(num_of_spaces + formatted_line)
         else:
             num_of_spaces = int(dictionary["LM"]) - 2
             margin = " "
@@ -57,41 +61,40 @@ class Formatter:
         if self.current_working_line == "" and self.format_dictionary["JUST"] != "BULLET":
             Formatter.last_format_width = int(self.format_dictionary["RM"]) - int(self.format_dictionary["LM"]) + 1
         if self.current_working_line == "" and self.format_dictionary["JUST"] == "BULLET":
-            Formatter.last_format_width = int(self.format_dictionary["RM"]) - int(self.format_dictionary["LM"]) + 2
+            Formatter.last_format_width = int(self.format_dictionary["RM"]) - int(self.format_dictionary["LM"])
 
-        # if input_line == "":
-        #     if self.format_dictionary["FLOW"] == "YES":
-        #         #print(self.current_working_line)
-        #     new_paragraph = True
-        #     #print("")
-        #     return
+        if input_line == "":
+            if self.format_dictionary["FLOW"] == "YES":
+                printLine(self.current_working_line, self.format_dictionary, self.new_par)
+            self.clearTheLine()
+            print("")
+            return
 
-        input_line = expandVariables(input_line, self.variable_dictionary)
+        else:
+            input_line = expandVariables(input_line, self.variable_dictionary)
+            if self.format_dictionary["FLOW"] == "YES":
+                words = input_line.split()
+                count = len(words)
+                for word in words:
+                    length = len(word)
+                    if len(word) <= Formatter.last_format_width:
+                        self.current_working_line = " ".join((self.current_working_line, word))
+                        Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
+                    else:
+                        printLine(self.current_working_line, self.format_dictionary, self.new_par)
+                        if self.format_dictionary["JUST"] == "BULLET":
+                            self.clearTheLine()
+                            self.new_par = False
+                        else:
+                            self.clearTheLine()
+                        self.current_working_line = " ".join((self.current_working_line, word))
+                        Formatter.last_format_width = original_width
+                        Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
 
-        # if self.format_dictionary["JUST"] == "BULLET" and self.new_par == True:
-        #     input_line =
-
-        if self.format_dictionary["FLOW"] == "YES":
-            words = input_line.split()
-            count = len(words)
-            for word in words:
-                length = len(word)
-                if len(word) <= Formatter.last_format_width:
-                    self.current_working_line = " ".join((self.current_working_line, word))
-                    Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
-                else:  # len(word) > Formatter.last_format_width:
-                    printLine(self.current_working_line, self.format_dictionary, self.new_par)
-                    self.current_working_line = ""
-                    self.current_working_line = " ".join((self.current_working_line, word))
-                    Formatter.last_format_width = original_width
-                    Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
-                # count = count - 1
-
-        if self.format_dictionary["FLOW"] == "NO":
-            if len(input_line) > Formatter.last_format_width:
-                f_line = input_line[:Formatter.last_format_width]
-                printLine(f_line, self.format_dictionary, self.new_par)
-                return
-            else:
-                printLine(input_line, self.format_dictionary, self.new_par)
-                return
+            elif self.format_dictionary["FLOW"] == "NO":
+                if len(input_line) > Formatter.last_format_width:
+                    f_line = input_line[:Formatter.last_format_width]
+                    printLine(f_line, self.format_dictionary, self.new_par)
+                else:
+                    printLine(input_line, self.format_dictionary, self.new_par)
+                    return
