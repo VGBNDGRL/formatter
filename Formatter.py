@@ -18,6 +18,8 @@ def expandVariables(line, dictionary):
 def printLine(current_line, dictionary, new_par):
     if dictionary["FLOW"] == "YES":
         if dictionary["JUST"] == "BULLET":
+            if current_line == "":
+                return
             if new_par:
                 num_of_spaces = " " * (int(dictionary["LM"]) - 1)
                 formatted_line = dictionary["BULLET"] + current_line
@@ -28,6 +30,8 @@ def printLine(current_line, dictionary, new_par):
                 formatted_line = current_line
                 print(num_of_spaces + formatted_line)
         else:
+            if current_line == "":
+                return
             num_of_spaces = int(dictionary["LM"]) - 2
             margin = " "
             lm_spacing = margin * num_of_spaces
@@ -77,19 +81,34 @@ class Formatter:
                 count = len(words)
                 for word in words:
                     length = len(word)
-                    if len(word) <= Formatter.last_format_width:
-                        self.current_working_line = " ".join((self.current_working_line, word))
-                        Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
-                    else:
-                        printLine(self.current_working_line, self.format_dictionary, self.new_par)
-                        if self.format_dictionary["JUST"] == "BULLET":
-                            self.clearTheLine()
-                            self.new_par = False
+                    if self.format_dictionary["JUST"] == "BULLET":
+                        if len(word) < Formatter.last_format_width:
+                            self.current_working_line = " ".join((self.current_working_line, word))
+                            Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
                         else:
-                            self.clearTheLine()
-                        self.current_working_line = " ".join((self.current_working_line, word))
-                        Formatter.last_format_width = original_width
-                        Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
+                            printLine(self.current_working_line, self.format_dictionary, self.new_par)
+                            if self.format_dictionary["JUST"] == "BULLET":
+                                self.clearTheLine()
+                                self.new_par = False
+                            else:
+                                self.clearTheLine()
+                            self.current_working_line = " ".join((self.current_working_line, word))
+                            Formatter.last_format_width = original_width
+                            Formatter.last_format_width = Formatter.last_format_width - len(word) - 2
+                    else:
+                        if len(word) <= Formatter.last_format_width:
+                            self.current_working_line = " ".join((self.current_working_line, word))
+                            Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
+                        else:
+                            printLine(self.current_working_line, self.format_dictionary, self.new_par)
+                            if self.format_dictionary["JUST"] == "BULLET":
+                                self.clearTheLine()
+                                self.new_par = False
+                            else:
+                                self.clearTheLine()
+                                self.current_working_line = " ".join((self.current_working_line, word))
+                                Formatter.last_format_width = original_width
+                                Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
 
             elif self.format_dictionary["FLOW"] == "NO":
                 if len(input_line) > Formatter.last_format_width:
