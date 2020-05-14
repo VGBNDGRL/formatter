@@ -1,7 +1,6 @@
 #! /usr/bin/python3
 import sys
 import os
-import pprint
 from p4At import *
 from Formatter import *
 

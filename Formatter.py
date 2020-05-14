@@ -98,9 +98,7 @@ class Formatter:
             input_line = expandVariables(input_line, self.variable_dictionary)
             if self.format_dictionary["FLOW"] == "YES":
                 words = input_line.split()
-                count = len(words)
                 for word in words:
-                    length = len(word)
                     if self.format_dictionary["JUST"] == "BULLET":
                         if len(word) < Formatter.last_format_width:
                             self.current_working_line = " ".join((self.current_working_line, word))
@@ -121,14 +119,10 @@ class Formatter:
                             Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
                         else:
                             printLine(self.current_working_line, self.format_dictionary, self.new_par)
-                            if self.format_dictionary["JUST"] == "BULLET":
-                                self.clearTheLine()
-                                self.new_par = False
-                            else:
-                                self.clearTheLine()
-                                self.current_working_line = " ".join((self.current_working_line, word))
-                                Formatter.last_format_width = original_width
-                                Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
+                            self.clearTheLine()
+                            self.current_working_line = " ".join((self.current_working_line, word))
+                            Formatter.last_format_width = original_width
+                            Formatter.last_format_width = Formatter.last_format_width - len(word) - 1
 
             elif self.format_dictionary["FLOW"] == "NO":
                 if len(input_line) > Formatter.last_format_width:
